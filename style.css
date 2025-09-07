@@ -228,6 +228,38 @@ h3 {
   font-weight: 600;
 }
 
+#social-links {
+  display: none;
+}
+
+#contactid {
+  display: none;
+}
+
+#lochid {
+  display: none;
+}
+
+#values-list {
+  display: none;
+}
+
+.values-section:hover #values-list {
+  display: block;
+}
+
+.location-section:hover #lochid {
+  display: block;
+}
+
+.contact-section:hover #contactid {
+  display: block;
+}
+
+.social-section:hover #social-links {
+  display: block;
+}
+
 /* Header and Footer */
 .header,
 .footer {
