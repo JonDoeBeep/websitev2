@@ -228,38 +228,30 @@ h3 {
   font-weight: 600;
 }
 
-#social-links {
-  display: none;
-}
-
-#contactid {
-  display: none;
-}
-
-#lochid {
-  display: none;
-}
-
+#social-links,
+#contactid,
+#lochid,
 #values-list {
-  display: none;
+  opacity: 0;
+  transform: translateY(-6px);
+  visibility: hidden;
+  pointer-events: none;
+  transition:
+    opacity .25s ease,
+    transform .25s ease,
+    visibility 0s linear .25s; /* hide after fade-out */
 }
 
-.values-section:hover #values-list {
-  display: block;
-}
-
-.location-section:hover #lochid {
-  display: block;
-}
-
-.contact-section:hover #contactid {
-  display: block;
-}
-
+.values-section:hover #values-list,
+.location-section:hover #lochid,
+.contact-section:hover #contactid,
 .social-section:hover #social-links {
-  display: block;
+  opacity: 1;
+  transform: translateY(0);
+  visibility: visible;
+  pointer-events: auto;
+  transition-delay: 0s, 0s, 0s;
 }
-
 /* Header and Footer */
 .header,
 .footer {
@@ -271,6 +263,7 @@ h3 {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
   -moz-column-gap: var(--spacing-base);
+.dropdown:hover .dropdown-content {display: block;}
        column-gap: var(--spacing-base);
 }
 
