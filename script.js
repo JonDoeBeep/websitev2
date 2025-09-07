@@ -1,6 +1,3 @@
-import { Pane } from "https://cdn.skypack.dev/tweakpane@4.0.4";
-window.Pane = Pane;
-
 // Register GSAP plugins
 gsap.registerPlugin(CustomEase);
 CustomEase.create("hop", "0.9, 0, 0.1, 1");
@@ -41,7 +38,7 @@ const container = document.querySelector(".container");
 const canvas = document.getElementById("canvas");
 const overlay = document.getElementById("overlay");
 const projectTitleElement = document.querySelector(".project-title p");
-// Settings object for Tweakpane
+// Settings object
 const settings = {
   // Item sizes
   baseWidth: 400,
@@ -53,8 +50,8 @@ const settings = {
   dragEase: 0.075,
   momentumFactor: 200,
   bufferZone: 3,
-  borderRadius: 0,
-  vignetteSize: 0,
+  borderRadius: 15,
+  vignetteSize: 13,
   // Page vignette settings - simplified to two main controls
   vignetteStrength: 0.7, // Controls opacity of all layers
   vignetteSize: 200, // Controls size of all layers
@@ -107,186 +104,7 @@ let titleSplit = null;
 let activeCaptionNameSplit = null;
 let activeCaptionNumberSplit = null;
 let paneInstance = null;
-// Initialize Tweakpane
-function initTweakpane() {
-  // Wait for Pane to be available (imported via ES module)
-  if (!window.Pane) {
-    setTimeout(initTweakpane, 100);
-    return;
-  }
-  // Create the pane with a title and make it visible even when collapsed
-  paneInstance = new window.Pane({
-    title: "Gallery Settings",
-    expanded: false
-  });
-  // Make sure the pane is visible by styling its container
-  const paneElement = paneInstance.element;
-  paneElement.style.position = "fixed";
-  paneElement.style.top = "10px";
-  paneElement.style.right = "10px";
-  paneElement.style.zIndex = "10000";
-  // Item size settings
-  const sizeFolder = paneInstance.addFolder({
-    title: "Item Sizes",
-    expanded: false
-  });
-  sizeFolder
-    .addBinding(settings, "baseWidth", {
-      min: 100,
-      max: 600,
-      step: 10
-    })
-    .on("change", updateSettings);
-  sizeFolder
-    .addBinding(settings, "smallHeight", {
-      min: 100,
-      max: 400,
-      step: 10
-    })
-    .on("change", updateSettings);
-  sizeFolder
-    .addBinding(settings, "largeHeight", {
-      min: 100,
-      max: 600,
-      step: 10
-    })
-    .on("change", updateSettings);
-  // Layout settings
-  const layoutFolder = paneInstance.addFolder({
-    title: "Layout",
-    expanded: false
-  });
-  layoutFolder
-    .addBinding(settings, "itemGap", {
-      min: 0,
-      max: 100,
-      step: 5
-    })
-    .on("change", updateSettings);
-  layoutFolder
-    .addBinding(settings, "bufferZone", {
-      min: 1,
-      max: 5,
-      step: 0.5
-    })
-    .on("change", updateSettings);
-  // Style settings
-  const styleFolder = paneInstance.addFolder({
-    title: "Style",
-    expanded: false
-  });
-  styleFolder
-    .addBinding(settings, "borderRadius", {
-      min: 0,
-      max: 16,
-      step: 1
-    })
-    .on("change", updateBorderRadius);
-  // Item vignette settings
-  const itemVignetteFolder = paneInstance.addFolder({
-    title: "Item Vignette",
-    expanded: false
-  });
-  itemVignetteFolder
-    .addBinding(settings, "vignetteSize", {
-      min: 0,
-      max: 50,
-      step: 1
-    })
-    .on("change", updateVignetteSize);
-  // Page vignette settings - simplified to two controls
-  const pageVignetteFolder = paneInstance.addFolder({
-    title: "Page Vignette",
-    expanded: false
-  });
-  pageVignetteFolder
-    .addBinding(settings, "vignetteStrength", {
-      min: 0,
-      max: 1,
-      step: 0.05
-    })
-    .on("change", updatePageVignette);
-  pageVignetteFolder
-    .addBinding(settings, "vignetteSize", {
-      min: 0,
-      max: 500,
-      step: 10
-    })
-    .on("change", updatePageVignette);
-  // Overlay settings
-  const overlayFolder = paneInstance.addFolder({
-    title: "Overlay Animation",
-    expanded: false
-  });
-  overlayFolder.addBinding(settings, "overlayOpacity", {
-    min: 0,
-    max: 1,
-    step: 0.05
-  });
-  overlayFolder.addBinding(settings, "overlayEaseDuration", {
-    min: 0.2,
-    max: 2,
-    step: 0.1
-  });
-  // Animation settings
-  const animationFolder = paneInstance.addFolder({
-    title: "Animation",
-    expanded: false
-  });
-  animationFolder
-    .addBinding(settings, "hoverScale", {
-      min: 1,
-      max: 1.5,
-      step: 0.05
-    })
-    .on("change", updateHoverScale);
-  animationFolder.addBinding(settings, "expandedScale", {
-    min: 0.2,
-    max: 0.8,
-    step: 0.05
-  });
-  animationFolder.addBinding(settings, "dragEase", {
-    min: 0.01,
-    max: 0.2,
-    step: 0.01
-  });
-  animationFolder.addBinding(settings, "momentumFactor", {
-    min: 50,
-    max: 500,
-    step: 10
-  });
-  animationFolder.addBinding(settings, "zoomDuration", {
-    min: 0.2,
-    max: 1.5,
-    step: 0.1
-  });
-  // Add a button to reset the view
-  paneInstance
-    .addButton({
-      title: "Reset View"
-    })
-    .on("click", () => {
-      targetX = 0;
-      targetY = 0;
-    });
-  // Add keyboard shortcut for toggling the panel
-  window.addEventListener("keydown", (e) => {
-    // Toggle panel visibility with the 'h' key
-    if (e.key === "h" || e.key === "H") {
-      togglePaneVisibility();
-    }
-  });
-}
-// Function to toggle the panel visibility
-function togglePaneVisibility() {
-  if (!paneInstance) return;
-  const element = paneInstance.element;
-  if (element.style.display === "none") {
-    element.style.display = "";
-  } else {
-    element.style.display = "none";
-  }
-}
+
 // Update CSS variable for border radius
 function updateBorderRadius() {
   document.documentElement.style.setProperty(
@@ -294,6 +112,7 @@ function updateBorderRadius() {
     `${settings.borderRadius}px`
   );
 }
+
 // Update CSS variable for item vignette
 function updateVignetteSize() {
   document.documentElement.style.setProperty(
@@ -301,6 +120,7 @@ function updateVignetteSize() {
     `${settings.vignetteSize}px`
   );
 }
+
 // Update CSS variable for page vignette - now using the simplified controls
 function updatePageVignette() {
   const strength = settings.vignetteStrength;
@@ -339,6 +159,7 @@ function updatePageVignette() {
     `rgba(0,0,0,${extremeOpacity})`
   );
 }
+
 // Update CSS variable for hover scale
 function updateHoverScale() {
   // Use CSS variables instead of directly modifying CSS rules
@@ -354,6 +175,7 @@ function updateHoverScale() {
     }
   });
 }
+
 // Update settings and rebuild the grid
 function updateSettings() {
   // Update item sizes
@@ -909,5 +731,3 @@ function initializeStyles() {
 initializeStyles();
 updateVisibleItems();
 animate();
-// Initialize Tweakpane after a short delay to ensure DOM is ready
-setTimeout(initTweakpane, 500);

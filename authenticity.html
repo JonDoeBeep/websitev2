@@ -2,10 +2,9 @@
 <html lang="en" >
 <head>
   <meta charset="UTF-8">
-  <title>Michael Beecher - Photographer</title>
+  <title>Authenticity - Michael Beecher Photography</title>
   <link rel="stylesheet" href="normalize.min.css">
-<link rel="stylesheet" href="style.css">
-
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <!-- partial:index.partial.html -->
@@ -66,13 +65,33 @@
   </div>
 </div>
 
-<div class="container">
-  <div class="canvas" id="canvas"></div>
-  <div class="overlay" id="overlay"></div>
+<div class="clarity-content">
+  <div class="page-header">
+    <h1>Authenticity</h1>
+    <p class="page-subtitle">Genuine moments. Real emotion. Honest storytelling.</p>
+  </div>
+  
+  <div class="content-body">
+    <div class="philosophy-section">
+      <h2>Philosophy</h2>
+      <p>Authenticity is the soul of meaningful photography. It's about capturing truth in its many forms—the unguarded laugh, the quiet contemplation, the raw emotion that exists in the spaces between posed moments.</p>
+    </div>
+    
+    <div class="approach-section">
+      <h2>My Approach</h2>
+      <p>I create environments where genuine expression can flourish naturally. By building trust and remaining unobtrusive, I document real stories as they unfold, preserving the integrity of each unique moment.</p>
+    </div>
+    
+    <div class="technical-section">
+      <h2>Honest Documentation</h2>
+      <p>Technical excellence serves authenticity, never overshadows it. My role is to be invisible while present, capturing truth with respect and sensitivity to preserve the genuine essence of every subject.</p>
+    </div>
+  </div>
 </div>
 
-<div class="project-title">
-  <p></p>
+<!-- Side scrolling images -->
+<div class="side-images-container">
+  <div class="side-images-canvas" id="sideImagesCanvas"></div>
 </div>
 
 <!-- Page transition overlay -->
@@ -84,11 +103,48 @@
   <div class="page-vignette-strong"></div>
   <div class="page-vignette-extreme"></div>
 </div>
-<!-- partial -->
-  <script src='https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/gsap.min.js'></script>
+
+<script src='https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/gsap.min.js'></script>
 <script src='https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/CustomEase.min.js'></script>
 <script src='https://unpkg.com/split-type'></script>
 <script>
+// Side images functionality
+const sideImageUrls = [
+  "https://cdn.cosmos.so/0f164449-f65e-4584-9d62-a9b3e1f4a90a?format=jpeg",
+  "https://cdn.cosmos.so/74ccf6cc-7672-4deb-ba13-1727b7dc6146?format=jpeg",
+  "https://cdn.cosmos.so/2f49a117-05e7-4ae9-9e95-b9917f970adb?format=jpeg",
+  "https://cdn.cosmos.so/7b5340f5-b4dc-4c08-8495-c507fa81480b?format=jpeg",
+  "https://cdn.cosmos.so/f733585a-081e-48e7-a30e-e636446f2168?format=jpeg",
+  "https://cdn.cosmos.so/47caf8a0-f456-41c5-98ea-6d0476315731?format=jpeg",
+  "https://cdn.cosmos.so/f99f8445-6a19-4a9a-9de3-ac382acc1a3f?format=jpeg"
+];
+
+let sideImagesCanvas, sideCurrentY = 0, sideTargetY = 0;
+let sideIsDragging = false, sideStartY, sideDragVelocity = 0;
+let sideVisibleImages = new Set();
+let sideLastUpdateY = 0;
+
+function initSideImages() {
+  sideImagesCanvas = document.getElementById('sideImagesCanvas');
+  sideImagesCanvas.innerHTML = ''; // Clear any existing content
+
+  // Create image elements and add to canvas
+  sideImageUrls.forEach((url, index) => {
+    const img = document.createElement('img');
+    img.src = url;
+    img.classList.add('side-image');
+    img.style.opacity = '0'; // Start hidden
+    img.dataset.index = index; // Store index for reference
+    sideImagesCanvas.appendChild(img);
+  });
+
+  // Initial display of images
+  updateSideImageVisibility();
+  
+  // Initialize scrolling animation
+  requestAnimationFrame(sideImageScroll);
+}
+
 // Page transition functionality
 function initPageTransitions() {
   const pageTransition = document.getElementById('pageTransition');
@@ -136,9 +192,9 @@ document.addEventListener('DOMContentLoaded', () => {
   );
   
   initPageTransitions();
+  initSideImages();
 });
 </script>
-<script type="module" src="script.js"></script>
 
 </body>
 </html>
