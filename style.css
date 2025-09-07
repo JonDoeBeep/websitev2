@@ -239,7 +239,7 @@ h3 {
   transition:
     opacity .25s ease,
     transform .25s ease,
-    visibility 0s linear .25s; /* hide after fade-out */
+    visibility 0.5s linear .5s; /* hide after fade-out */
 }
 
 .values-section:hover #values-list,
@@ -250,7 +250,7 @@ h3 {
   transform: translateY(0);
   visibility: visible;
   pointer-events: auto;
-  transition-delay: 0s, 0s, 0s;
+  transition-delay: 0.5s, 0.5s, 0.5s;
 }
 /* Header and Footer */
 .header,
