@@ -68,23 +68,23 @@
 <div class="clarity-content">
   <div class="page-header">
     <h1>Authenticity</h1>
-    <p class="page-subtitle">Genuine moments. Real emotion. Honest storytelling.</p>
+    <p class="page-subtitle">pee poop</p>
   </div>
   
   <div class="content-body">
     <div class="philosophy-section">
       <h2>Philosophy</h2>
-      <p>Authenticity is the soul of meaningful photography. It's about capturing truth in its many forms—the unguarded laugh, the quiet contemplation, the raw emotion that exists in the spaces between posed moments.</p>
+      <p>i am the storm that is approaching</p>
     </div>
     
     <div class="approach-section">
       <h2>My Approach</h2>
-      <p>I create environments where genuine expression can flourish naturally. By building trust and remaining unobtrusive, I document real stories as they unfold, preserving the integrity of each unique moment.</p>
+      <p>lorem ipsum dolor sit amet</p>
     </div>
     
     <div class="technical-section">
-      <h2>Honest Documentation</h2>
-      <p>Technical excellence serves authenticity, never overshadows it. My role is to be invisible while present, capturing truth with respect and sensitivity to preserve the genuine essence of every subject.</p>
+      <h2>idk what to title this</h2>
+      <p>:D</p>
     </div>
   </div>
 </div>
@@ -126,23 +126,145 @@ let sideLastUpdateY = 0;
 
 function initSideImages() {
   sideImagesCanvas = document.getElementById('sideImagesCanvas');
-  sideImagesCanvas.innerHTML = ''; // Clear any existing content
-
-  // Create image elements and add to canvas
-  sideImageUrls.forEach((url, index) => {
-    const img = document.createElement('img');
-    img.src = url;
-    img.classList.add('side-image');
-    img.style.opacity = '0'; // Start hidden
-    img.dataset.index = index; // Store index for reference
-    sideImagesCanvas.appendChild(img);
-  });
-
-  // Initial display of images
-  updateSideImageVisibility();
   
-  // Initialize scrolling animation
-  requestAnimationFrame(sideImageScroll);
+  // Add drag functionality
+  sideImagesCanvas.addEventListener('mousedown', handleSideMouseDown);
+  window.addEventListener('mousemove', handleSideMouseMove);
+  window.addEventListener('mouseup', handleSideMouseUp);
+  
+  // Initial update
+  updateSideVisibleImages();
+  
+  // Start animation loop
+  animateSideImages();
+}
+
+function getSideImageId(index) {
+  return `side-img-${index}`;
+}
+
+function createSideImage(index) {
+  const img = document.createElement('div');
+  img.className = 'side-image';
+  img.id = getSideImageId(index);
+  
+  // Deterministic but varied sizing based on index
+  const sizeVariation = Math.sin(index * 0.7) * 0.5 + 0.5; // 0-1
+  const width = 120 + sizeVariation * 80; // 120-200px width
+  const aspectVariation = Math.cos(index * 0.9) * 0.3 + 1.3; // 1.0-1.6 aspect ratio
+  const height = width * aspectVariation;
+  
+  img.style.width = `${width}px`;
+  img.style.height = `${height}px`;
+  
+  // Deterministic horizontal positioning
+  const sideChoice = Math.sin(index * 1.3) > 0; // Left or right side
+  const horizontalPos = sideChoice ? 
+    20 + Math.abs(Math.sin(index * 2.1)) * 150 : // Left side: 20-170px from left
+    window.innerWidth - width - 20 - Math.abs(Math.cos(index * 1.7)) * 150; // Right side
+  
+  img.style.left = `${horizontalPos}px`;
+  
+  // Vertical spacing - closer together
+  const baseSpacing = 200; // Reduced from 400 to 200
+  const randomOffset = Math.sin(index * 3.7) * 100; // Reduced from ±150px to ±100px
+  const yPos = index * baseSpacing + randomOffset;
+  img.style.top = `${yPos}px`;
+  
+  // Add image element
+  const imgElement = document.createElement('img');
+  // Fix negative index issue by using absolute value and ensuring positive range
+  const imageIndex = Math.abs(Math.floor(Math.sin(Math.abs(index) * 1.9) * sideImageUrls.length));
+  imgElement.src = sideImageUrls[imageIndex % sideImageUrls.length];
+  imgElement.alt = `Side image ${Math.abs(index) + 1}`; // Always positive index for display
+  img.appendChild(imgElement);
+  
+  return img;
+}
+
+function updateSideVisibleImages() {
+  const viewportHeight = window.innerHeight;
+  const bufferZone = viewportHeight * 2; // Larger buffer for smoother experience
+  
+  // Calculate visible range based on current position
+  const topBound = -sideCurrentY - bufferZone;
+  const bottomBound = -sideCurrentY + viewportHeight + bufferZone;
+  
+  // Determine image indices that should be visible
+  const baseSpacing = 200; // Updated to match createSideImage
+  const startIndex = Math.floor((topBound - 200) / baseSpacing); // Reduced buffer
+  const endIndex = Math.ceil((bottomBound + 200) / baseSpacing); // Reduced buffer
+  
+  const currentImages = new Set();
+  
+  // Create visible images
+  for (let i = startIndex; i <= endIndex; i++) {
+    const imageId = getSideImageId(i);
+    currentImages.add(imageId);
+    
+    if (!sideVisibleImages.has(imageId)) {
+      const imageElement = createSideImage(i);
+      sideImagesCanvas.appendChild(imageElement);
+      sideVisibleImages.add(imageId);
+    }
+  }
+  
+  // Remove images that are no longer visible
+  sideVisibleImages.forEach((imageId) => {
+    if (!currentImages.has(imageId)) {
+      const element = document.getElementById(imageId);
+      if (element && element.parentNode === sideImagesCanvas) {
+        sideImagesCanvas.removeChild(element);
+      }
+      sideVisibleImages.delete(imageId);
+    }
+  });
+}
+
+function handleSideMouseDown(e) {
+  sideIsDragging = true;
+  sideStartY = e.clientY;
+  sideImagesCanvas.style.cursor = 'grabbing';
+}
+
+function handleSideMouseMove(e) {
+  if (!sideIsDragging) return;
+  
+  const deltaY = e.clientY - sideStartY;
+  sideDragVelocity = deltaY * 0.02; // Slower than main gallery
+  sideTargetY += deltaY;
+  sideStartY = e.clientY;
+}
+
+function handleSideMouseUp() {
+  if (!sideIsDragging) return;
+  sideIsDragging = false;
+  sideImagesCanvas.style.cursor = 'grab';
+  
+  // Add momentum
+  sideTargetY += sideDragVelocity * 100;
+}
+
+function animateSideImages() {
+  // Slower easing than main gallery
+  const ease = 0.02;
+  sideCurrentY += (sideTargetY - sideCurrentY) * ease;
+  
+  // Auto-scroll slowly when not dragging
+  if (!sideIsDragging) {
+    sideTargetY += 0.2; // Very slow auto-scroll
+  }
+  
+  sideImagesCanvas.style.transform = `translateY(${sideCurrentY}px)`;
+  
+  // Update visible images when position changes significantly
+  const distMoved = Math.abs(sideCurrentY - sideLastUpdateY);
+  if (distMoved > 200) { // Update every 200px of movement
+    updateSideVisibleImages();
+    sideLastUpdateY = sideCurrentY;
+  }
+  
+  requestAnimationFrame(animateSideImages);
 }
 
 // Page transition functionality

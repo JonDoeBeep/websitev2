@@ -3,36 +3,36 @@ gsap.registerPlugin(CustomEase);
 CustomEase.create("hop", "0.9, 0, 0.1, 1");
 // Project titles
 const items = [
-  "Chromatic Loopscape",
-  "Solar Bloom",
-  "Neon Handscape",
-  "Echo Discs",
-  "Void Gaze",
-  "Gravity Sync",
-  "Heat Core",
-  "Fractal Mirage",
-  "Nova Pulse",
-  "Sonic Horizon",
-  "Dream Circuit",
-  "Lunar Mesh",
-  "Radiant Dusk",
-  "Pixel Drift",
-  "Vortex Bloom",
-  "Shadow Static",
-  "Crimson Phase",
-  "Retro Cascade",
-  "Photon Fold",
-  "Zenith Flow"
+  "photo 1 title",
+  "photo 2 title",
+  "photo 3 title",
+  "photo 4 title",
+  "photo 5 title",
+  "photo 6 title",
+  "photo 7 title",
+  "photo 8 title",
+  "photo 9 title",
+  "photo 10 title",
+  "photo 11 title",
+  "photo 12 title",
+  "photo 13 title",
+  "photo 14 title",
+  "photo 15 title",
+  "photo 16 title",
+  "Photo 17 title",
+  "photo 18 title",
+  "photo 19 title",
+  "photo 20 title"
 ];
 // Image URLs - replace with your actual image URLs
 const imageUrls = [
-  "https://cdn.cosmos.so/0f164449-f65e-4584-9d62-a9b3e1f4a90a?format=jpeg",
-  "https://cdn.cosmos.so/74ccf6cc-7672-4deb-ba13-1727b7dc6146?format=jpeg",
-  "https://cdn.cosmos.so/2f49a117-05e7-4ae9-9e95-b9917f970adb?format=jpeg",
-  "https://cdn.cosmos.so/7b5340f5-b4dc-4c08-8495-c507fa81480b?format=jpeg",
-  "https://cdn.cosmos.so/f733585a-081e-48e7-a30e-e636446f2168?format=jpeg",
-  "https://cdn.cosmos.so/47caf8a0-f456-41c5-98ea-6d0476315731?format=jpeg",
-  "https://cdn.cosmos.so/f99f8445-6a19-4a9a-9de3-ac382acc1a3f?format=jpeg"
+  "https://filetandvine.com/wp-content/uploads/2015/07/pix-uploaded-placeholder.jpg",
+  "https://images.unsplash.com/photo-1599009434802-ca1dd09895e7?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8cGxhY2Vob2xkZXJ8ZW58MHx8MHx8fDA%3D",
+  "https://loremipsum.imgix.net/GTlzd4xkx4LmWsG1Kw1BB/ad1834111245e6ee1da4372f1eb5876c/placeholder.com-1280x720.png?w=1920&q=60&auto=format",
+  "https://t3.ftcdn.net/jpg/04/32/03/60/360_F_432036097_YLqTkNqaYO7kkDgn5zvxDm4XEr6bnGKC.jpg",
+  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTd6pe6bD4R4gHiYW9IdI6hFl4vOtvRXvJUcw&s",
+  "https://t3.ftcdn.net/jpg/08/69/84/48/360_F_869844802_YFKXQm0wVjsQ3f7LilqjAu3hRAo1i1y3.jpg",
+  "https://c4.wallpaperflare.com/wallpaper/754/825/149/quote-wallpaper-preview.jpg"
 ];
 const container = document.querySelector(".container");
 const canvas = document.getElementById("canvas");
